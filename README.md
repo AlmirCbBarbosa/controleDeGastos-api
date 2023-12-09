@@ -11,6 +11,6 @@ Para rodar rodar este projeto na sua máquina, por favor digite:
 Para executar o servidor entre com o coamndo:
 
 ```
-  npm run servidor
+  npm run server
 ```
 
