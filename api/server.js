@@ -1,8 +1,10 @@
 import 'dotenv/config';
 import {fastify} from 'fastify';
+import DatabaseMemory from './controllers/DatabaseMemory.js';//banco de testes
 
 const {PORT} = process.env;
 const server = fastify();
+const database = new DatabaseMemory();
 
 
 server.get('/', ()=>{ //raiz
@@ -11,15 +13,21 @@ server.get('/', ()=>{ //raiz
 
 //routes
 server.post('/compras',(request, reply)=>{
-    console.log('esta rota criara um novo resgistro de compras no banco de dados.');
+    const {data, produto, valor} = request.body;
 
-    return reply.status(201).send('criando registro');
+    database.create({
+        data: data,
+        produto: produto,
+        valor: valor
+    });
+
+    return reply.status(201).send();
 });
 
 server.get('/compras', (request, reply)=>{
-    console.log('esta rota exibira uma compra específica através de query, ou todas as compras realizadas');
+    const videos = database.list();
 
-    return reply.status(200).send('consulta realizada')
+    return reply.status(200).send(videos);
 });
 
 server.put('/compras/:id',(request, reply)=>{
