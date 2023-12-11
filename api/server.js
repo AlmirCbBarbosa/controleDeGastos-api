@@ -33,16 +33,25 @@ server.get('/compras', (request, reply)=>{
 
 server.put('/compras/:id',(request, reply)=>{
     const compraId = request.params.id;
-    console.log(`A compra com id:${compraId} foi atualizada com sucesso`);
+    const {data, produto, valor} = request.body;
 
-    return reply.status(200).send(`A compra com id:${compraId} foi atualizada com sucesso`);
+    database.update(compraId,{
+        data: data, 
+        produto: produto,
+        valor: valor
+    } )    
+
+    console.log(`A compra com id:${compraId} foi atualizada com sucesso`);
+    return reply.status(204).send();
 });
 
 server.delete('/compras/:id', (request, reply)=>{
     const compraId = request.params.id;
-    console.log(`A compra com id:${compraId} foi apagada com sucesso`);
 
-    return reply.status(200).send(`A compra com id:${compraId} foi apagada com sucesso`);
+    database.delete(compraId);
+
+    console.log(`A compra com id:${compraId} foi apagada com sucesso`);
+    return reply.status(204).send();
 })
 
 console.log(`Servidor esta rodando em http://localhost:${PORT}/`);

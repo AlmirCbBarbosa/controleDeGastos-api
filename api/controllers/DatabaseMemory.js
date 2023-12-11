@@ -26,8 +26,15 @@ class DatabaseMemory{
                 return compra.produto.includes(search);
             }
             return true;
-        })
-        
+        })        
+    }
+
+    update(compraId, compra){
+        this.#compras.set(compraId,compra);
+    }
+
+    delete(compraId){
+        this.#compras.delete(compraId)
     }
 
     
