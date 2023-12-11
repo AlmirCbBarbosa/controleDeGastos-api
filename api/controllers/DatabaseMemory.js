@@ -1,34 +1,36 @@
 import {randomUUID} from 'node:crypto';
 
 class DatabaseMemory{
-    #videos = new Map();
+    #compras = new Map();
 
 //métodos
-    create(video){//rata post
-        const videoId = randomUUID();
+    create(compra){//rata post
+        const compraId = randomUUID();
 
-        this.#videos.set(videoId, video);
+        this.#compras.set(compraId, compra);
     }
 
     list(search){
-        return Array.from(this.#videos.entries())
-        .map((videoArry)=>{
-            const id = videoArry[0];
-            const data = videoArry[1];
+        return Array.from(this.#compras.entries())
+        .map((compraArry)=>{
+            const id = compraArry[0];
+            const data = compraArry[1];
 
             return {//rota get
                 id: id,
                 ...data
             }
         })
-        .filter((video)=>{
+        .filter((compra)=>{
             if(search){
-                return video.produto.includes(search);
+                return compra.produto.includes(search);
             }
             return true;
         })
         
     }
+
+    
 }
 
 
