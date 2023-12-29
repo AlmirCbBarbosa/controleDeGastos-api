@@ -1,6 +1,6 @@
 # API de Controle de Gastos
 
->Status do projeto: Em desenvolvimento
+>Status do projeto: Integrando com banco de dados
 
 Para rodar rodar este projeto na sua máquina, por favor digite:
 
