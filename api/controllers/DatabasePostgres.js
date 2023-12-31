@@ -23,12 +23,13 @@ class DatabasePostgres{
         return compra;
     }
 
-    update(compraId, compra){
-        
+    async update(compraId, compra){
+        const {data, produto, valor} = compra;
+        await sql` UPDATE compra SET data=${data}, produto=${produto}, valor=${valor} WHERE id=${compraId}`
     }
 
-    delete(compraId){
-       
+    async delete(compraId){
+        await sql`DELETE FROM compra WHERE id = ${compraId}`       
     }
     
 }

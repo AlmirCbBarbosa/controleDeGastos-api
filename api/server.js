@@ -1,11 +1,9 @@
 import 'dotenv/config';
 import {fastify} from 'fastify';
-import DatabaseMemory from './controllers/DatabaseMemory.js';//banco de testes
 import DatabasePostgres from './controllers/DatabasePostgres.js';
 
 const {PORT} = process.env;
 const server = fastify();
-//const database = new DatabaseMemory(); //banco de dados de testes
 const database = new DatabasePostgres(); // banco de dados postgres
 
 server.get('/', ()=>{ //raiz
@@ -32,11 +30,11 @@ server.get('/compras', async(request, reply)=>{
     return reply.status(200).send(produto);
 });
 
-server.put('/compras/:id',(request, reply)=>{
+server.put('/compras/:id', async (request, reply)=>{
     const compraId = request.params.id;
     const {data, produto, valor} = request.body;
 
-    database.update(compraId,{
+    await database.update(compraId,{
         data: data, 
         produto: produto,
         valor: valor
@@ -46,10 +44,10 @@ server.put('/compras/:id',(request, reply)=>{
     return reply.status(204).send();
 });
 
-server.delete('/compras/:id', (request, reply)=>{
+server.delete('/compras/:id', async (request, reply)=>{
     const compraId = request.params.id;
 
-    database.delete(compraId);
+    await database.delete(compraId);
 
     console.log(`A compra com id:${compraId} foi apagada com sucesso`);
     return reply.status(204).send();
