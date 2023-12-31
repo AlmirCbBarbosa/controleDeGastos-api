@@ -1,21 +1,22 @@
 import 'dotenv/config';
 import {fastify} from 'fastify';
 import DatabaseMemory from './controllers/DatabaseMemory.js';//banco de testes
+import DatabasePostgres from './controllers/DatabasePostgres.js';
 
 const {PORT} = process.env;
 const server = fastify();
-const database = new DatabaseMemory();
-
+//const database = new DatabaseMemory(); //banco de dados de testes
+const database = new DatabasePostgres(); // banco de dados postgres
 
 server.get('/', ()=>{ //raiz
     return 'Gerenciador de gastos';
 });
 
 //routes
-server.post('/compras',(request, reply)=>{
+server.post('/compras', async(request, reply)=>{
     const {data, produto, valor} = request.body;
 
-    database.create({
+    await database.create({
         data: data,
         produto: produto,
         valor: valor
@@ -24,11 +25,11 @@ server.post('/compras',(request, reply)=>{
     return reply.status(201).send();
 });
 
-server.get('/compras', (request, reply)=>{
+server.get('/compras', async(request, reply)=>{
     const search = request.query.search
-    const videos = database.list(search);
+    const produto = await database.list(search);
 
-    return reply.status(200).send(videos);
+    return reply.status(200).send(produto);
 });
 
 server.put('/compras/:id',(request, reply)=>{
